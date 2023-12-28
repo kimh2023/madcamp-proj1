@@ -6,93 +6,79 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  // SafeAreaView,
+  // ScrollView,
+  // StatusBar,
   StyleSheet,
-  Text,
+  // Text,
   useColorScheme,
   View,
 } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {
   Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+  // DebugInstructions,
+  // Header,
+  // LearnMoreLinks,
+  // ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import ContactScreen from './src/screens/GalleryScreen';
+import GalleryScreen from './src/screens/ContactScreen';
+import MysteryScreen from './src/screens/MysteryScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import ContactIcon from './src/assets/icons/contact-icon.svg';
+import ContactIconFocus from './src/assets/icons/contact-icon-focus.svg';
+import GalleryIcon from './src/assets/icons/gallery-icon.svg';
+import GalleryIconFocus from './src/assets/icons/gallery-icon-focus.svg';
+import MysteryIcon from './src/assets/icons/mystery-icon.svg';
+import MysteryIconFocus from './src/assets/icons/mystery-icon-focus.svg';
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const Tab = createBottomTabNavigator();
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  // const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            switch (route.name) {
+              case '연락처':
+                if (focused) {
+                  return <ContactIconFocus width={40} height={40} />;
+                } else {
+                  return <ContactIcon width={40} height={40} />;
+                }
+              case '갤러리':
+                if (focused) {
+                  return <GalleryIconFocus width={40} height={40} />;
+                } else {
+                  return <GalleryIcon width={40} height={40} />;
+                }
+              default:
+                if (focused) {
+                  return <MysteryIconFocus width={40} height={40} />;
+                } else {
+                  return <MysteryIcon width={40} height={40} />;
+                }
+            }
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+        })}>
+        <Tab.Screen name="연락처" component={ContactScreen} />
+        <Tab.Screen name="갤러리" component={GalleryScreen} />
+        <Tab.Screen name="???" component={MysteryScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
