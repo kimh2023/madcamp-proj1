@@ -1,11 +1,12 @@
+import React from 'react';
 import {Text, View} from 'react-native';
 
-function GalleryScreen() {
+function ContactEditScreen() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>GalleryScreen!</Text>
+      <Text>ContactEditScreen!</Text>
     </View>
   );
 }
 
-export default GalleryScreen;
+export default ContactEditScreen;
