@@ -61,6 +61,7 @@ function EditTextInputItemList({
           ))}
         {valueList && (
           <EditTextInputItemListNew
+            index={valueList.length}
             setStartEdit={setStartEdit}
             setContactInfo={setContactInfo}
             valueList={valueList}

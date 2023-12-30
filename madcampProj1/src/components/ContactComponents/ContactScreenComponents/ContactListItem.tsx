@@ -30,8 +30,7 @@ function ContactListItem({id, name, number, favorite, image}: Props) {
         style={[
           style.containerDefaults,
           {
-            marginLeft: globalVariables.margin.leftMargin,
-            marginRight: globalVariables.margin.leftMargin,
+            marginHorizontal: globalVariables.margin.horizontalMargin,
             justifyContent: 'flex-start',
           },
         ]}>

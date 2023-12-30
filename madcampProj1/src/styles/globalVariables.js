@@ -6,7 +6,8 @@ export const globalVariables = {
     white: '#FFFFFF',
   },
   margin: {
-    leftMargin: 40,
+    horizontalMargin: 40,
+    buttonMargin: 25,
   },
   gap: {
     verticalGap: 15,

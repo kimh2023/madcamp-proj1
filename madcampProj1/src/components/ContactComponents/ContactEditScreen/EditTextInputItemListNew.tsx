@@ -9,25 +9,29 @@ import {globalVariables} from '@src/styles/globalVariables';
 import style from '@src/styles/style';
 
 const returnObject = (
+  index: number,
   value: string,
   innerAttribute?: editItemType['innerAttribute'],
 ) => {
   switch (innerAttribute) {
+    // id 있다
     case 'number':
-      return {label: 'mobile', number: value} as valueListItem;
+      return {id: index, label: 'mobile', number: value} as valueListItem;
     case 'email':
-      return {label: 'home', email: value} as valueListItem;
+      return {id: index, label: 'home', email: value} as valueListItem;
     default:
-      return {label: 'mobile', number: value} as valueListItem;
+      return {id: index, label: 'mobile', number: value} as valueListItem;
   }
 };
 
 function EditTextInputItemListNew({
+  index,
   setStartEdit,
   setContactInfo,
   valueList,
   innerAttribute,
 }: {
+  index: number;
   setStartEdit: () => void;
   setContactInfo: (changedValue: string | valueListItem[]) => void;
   valueList: valueListItem[];
@@ -46,7 +50,7 @@ function EditTextInputItemListNew({
   };
   const handleTextChangeEnd = () => {
     if (value.length !== 0) {
-      const newItem = returnObject(value, innerAttribute);
+      const newItem = returnObject(index + 10000, value, innerAttribute);
       setContactInfo([...valueList, newItem]);
       setValue('');
     }

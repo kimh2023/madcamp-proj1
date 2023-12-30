@@ -88,7 +88,7 @@ function MainTabs(): React.JSX.Element {
           flex: 1,
           textAlignVertical: 'bottom',
           marginBottom: 20,
-          marginLeft: globalVariables.margin.leftMargin,
+          marginLeft: globalVariables.margin.horizontalMargin,
         },
       })}>
       <Tab.Screen

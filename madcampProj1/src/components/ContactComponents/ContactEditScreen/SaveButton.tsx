@@ -1,9 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {ContactStackParamsList} from '@src/../App';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
-  Dimensions,
   PermissionsAndroid,
   Platform,
   Pressable,
@@ -16,9 +15,25 @@ import {globalVariables} from '@src/styles/globalVariables';
 import style from '@src/styles/style';
 
 function SaveButton({contact}: {contact: Contact | null}) {
-  const height = Dimensions.get('window').height;
   const navigation =
     useNavigation<NativeStackNavigationProp<ContactStackParamsList>>();
+  const callbackFunction = useCallback(() => {
+    if (contact && !('recordID' in contact)) {
+      Contacts.addContact(contact as Contact).then((res: Contact) => {
+        console.log('Contact Added: ', res);
+        navigation.navigate('ContactDetailsScreen', {
+          userId: res?.recordID as string,
+        });
+      });
+    } else {
+      Contacts.updateContact(contact as Contact).then(() => {
+        console.log('Contact Update: ', contact);
+      });
+      navigation.navigate('ContactDetailsScreen', {
+        userId: contact?.recordID as string,
+      });
+    }
+  }, [contact, navigation]);
   const handleContactInfoSave = () => {
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(
@@ -30,19 +45,11 @@ function SaveButton({contact}: {contact: Contact | null}) {
         },
       ).then(res => {
         console.log('Permission: ', res);
-        Contacts.updateContact(contact as Contact).then(() => {
-          console.log('Contact Update: ', contact);
-        });
+        callbackFunction();
       });
     } else {
-      Contacts.updateContact(contact as Contact).then(() => {
-        console.log('Contact Update: ', contact);
-      });
+      callbackFunction();
     }
-
-    navigation.navigate('ContactDetailsScreen', {
-      userId: contact?.recordID as string,
-    });
   };
 
   return (

@@ -78,7 +78,7 @@ function EditTextInput({
         {
           flex: 1,
           flexDirection: 'column',
-          paddingHorizontal: globalVariables.margin.leftMargin,
+          paddingHorizontal: globalVariables.margin.horizontalMargin,
           paddingVertical: 30,
         },
       ]}>

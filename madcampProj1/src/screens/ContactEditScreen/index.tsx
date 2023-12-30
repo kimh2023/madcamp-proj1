@@ -8,7 +8,11 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import Contacts, {Contact} from 'react-native-contacts';
+import Contacts, {
+  Contact,
+  EmailAddress,
+  PhoneNumber,
+} from 'react-native-contacts';
 import LinearGradient from 'react-native-linear-gradient';
 
 import EditTextInput from '@src/components/ContactComponents/ContactEditScreen/EditTextInput';
@@ -31,6 +35,18 @@ function ContactEditScreen({route, navigation}: Props) {
   const [startEdit, setStartEdit] = useState<boolean>(false);
   const [appState, setAppState] = useState('startup');
   const getContactInfo = useCallback(async () => {
+    if (route.params.userId.includes('newUser')) {
+      const nativeContact = {
+        familyName: '',
+        phoneNumbers: [] as PhoneNumber[],
+        emailAddresses: [] as EmailAddress[],
+        givenName: '',
+        company: '',
+      };
+      console.log('Contact: new contact');
+      setContactInfo(nativeContact as Contact);
+      return;
+    }
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
         title: '몰입캠프 프로젝트 1',
@@ -92,7 +108,14 @@ function ContactEditScreen({route, navigation}: Props) {
 
   return (
     <React.Fragment>
-      <StackHeader />
+      <StackHeader
+        path={
+          route.params.userId.includes('newUser')
+            ? 'MainTabs'
+            : 'ContactDetailsScreen'
+        }
+        userId={route.params.userId}
+      />
       <ScrollView>
         <LinearGradient
           style={[
@@ -118,4 +141,4 @@ function ContactEditScreen({route, navigation}: Props) {
   );
 }
 
-export default ContactEditScreen;
+export default React.memo(ContactEditScreen);

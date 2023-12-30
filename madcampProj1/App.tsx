@@ -47,13 +47,13 @@ function App(): React.JSX.Element {
           options={{title: '연락처'}}
         />
         <Stack.Screen
-          name="ContactDetailsScreen"
-          component={ContactDetailsScreen}
+          name="ContactEditScreen"
+          component={ContactEditScreen}
           initialParams={{userId: '1'}}
         />
         <Stack.Screen
-          name="ContactEditScreen"
-          component={ContactEditScreen}
+          name="ContactDetailsScreen"
+          component={ContactDetailsScreen}
           initialParams={{userId: '1'}}
         />
       </Stack.Navigator>
