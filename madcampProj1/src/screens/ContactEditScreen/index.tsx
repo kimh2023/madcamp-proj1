@@ -1,13 +1,20 @@
 import {ContactStackParamsList} from '../../../App';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {AppState, PermissionsAndroid, Platform, View} from 'react-native';
+import {
+  AppState,
+  PermissionsAndroid,
+  Platform,
+  ScrollView,
+  View,
+} from 'react-native';
 import Contacts, {Contact} from 'react-native-contacts';
 import LinearGradient from 'react-native-linear-gradient';
 
+import EditTextInput from '@src/components/ContactComponents/ContactEditScreen/EditTextInput';
+import {valueListItem} from '@src/components/ContactComponents/ContactEditScreen/EditTextInputGroup';
+import SaveButton from '@src/components/ContactComponents/ContactEditScreen/SaveButton';
 import ContactImage from '@src/components/ContactComponents/ContactImage';
-import EditTextInput from '@src/components/ContactComponents/EditTextInput';
-import SaveButton from '@src/components/ContactComponents/SaveButton';
 import StackHeader from '@src/components/LayoutComponents/StackHeader';
 
 import {globalVariables} from '@src/styles/globalVariables';
@@ -69,35 +76,45 @@ function ContactEditScreen({route, navigation}: Props) {
     };
   }, [appState, startEdit, memoizedGetContactInfo, route.params.userId]);
 
-  return (
-    <LinearGradient
-      style={[
-        style.screenDefaults,
-        {alignItems: 'center', paddingTop: 100, gap: 10},
-      ]}
-      colors={[globalVariables.color.blue0, globalVariables.color.white]}
-      start={{x: 0, y: 0}}
-      end={{x: 0, y: 0.5}}>
-      <StackHeader />
-      <View style={{backgroundColor: 'red'}}>
-        <ContactImage image={contactInfo?.thumbnailPath} />
-      </View>
+  // 최적화!
+  const setStartEditCallback = useCallback(() => setStartEdit(true), []);
+  const setContactInfoCallback = useCallback(
+    (attribute: keyof Contact, changedValue: string | valueListItem[]) =>
+      setContactInfo(
+        prevState =>
+          ({
+            ...prevState,
+            [attribute]: changedValue,
+          } as Contact),
+      ),
+    [],
+  );
 
-      <EditTextInput
-        setStartEdit={() => setStartEdit(true)}
-        setContactInfo={(attribute: keyof Contact, changedValue: string) =>
-          setContactInfo(
-            prevState =>
-              ({
-                ...prevState,
-                [attribute]: changedValue,
-              } as Contact),
-          )
-        }
-        contactInfo={contactInfo}
-      />
-      <SaveButton contact={contactInfo} />
-    </LinearGradient>
+  return (
+    <React.Fragment>
+      <StackHeader />
+      <ScrollView>
+        <LinearGradient
+          style={[
+            style.screenDefaults,
+            {alignItems: 'center', paddingTop: 100, gap: 10},
+          ]}
+          colors={[globalVariables.color.blue0, globalVariables.color.white]}
+          start={{x: 0, y: 0}}
+          end={{x: 0, y: 0.5}}>
+          <View style={{backgroundColor: 'red'}}>
+            <ContactImage image={contactInfo?.thumbnailPath} />
+          </View>
+
+          <EditTextInput
+            setStartEdit={setStartEditCallback}
+            setContactInfo={setContactInfoCallback}
+            contactInfo={contactInfo}
+          />
+          <SaveButton contact={contactInfo} />
+        </LinearGradient>
+      </ScrollView>
+    </React.Fragment>
   );
 }
 

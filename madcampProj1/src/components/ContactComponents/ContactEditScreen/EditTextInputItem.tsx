@@ -27,11 +27,9 @@ function EditTextInputItem({
         style={[style.input, style.h2]}
         value={value}
         onChangeText={text => handleTextChange(text)}
-        // fontFamily={}
-        // theme={{fonts: {regular: style.h1.fontFamily}}}
       />
     </View>
   );
 }
 
-export default EditTextInputItem;
+export default React.memo(EditTextInputItem);

@@ -36,11 +36,11 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="ContactEditScreen"
           component={ContactEditScreen}
           initialParams={{userId: '1'}}
-        />
+        /> */}
         <Stack.Screen
           name="MainTabs"
           component={MainTabs}
@@ -51,11 +51,11 @@ function App(): React.JSX.Element {
           component={ContactDetailsScreen}
           initialParams={{userId: '1'}}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ContactEditScreen"
           component={ContactEditScreen}
           initialParams={{userId: '1'}}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

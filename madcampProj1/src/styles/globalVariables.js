@@ -8,4 +8,7 @@ export const globalVariables = {
   margin: {
     leftMargin: 40,
   },
+  gap: {
+    verticalGap: 15,
+  },
 };

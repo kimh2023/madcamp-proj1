@@ -6,8 +6,8 @@ import {AppState, PermissionsAndroid, Platform, Text} from 'react-native';
 import Contacts, {Contact} from 'react-native-contacts';
 import LinearGradient from 'react-native-linear-gradient';
 
+import EditButton from '@src/components/ContactComponents/ContactDetailsScreen/EditButton';
 import ContactImage from '@src/components/ContactComponents/ContactImage';
-import EditButton from '@src/components/ContactComponents/EditButton';
 import StackHeader from '@src/components/LayoutComponents/StackHeader';
 
 import {globalVariables} from '@src/styles/globalVariables';
@@ -77,17 +77,20 @@ function ContactDetailsScreen({route, navigation}: Props) {
     <LinearGradient
       style={[
         style.screenDefaults,
-        {alignItems: 'center', paddingTop: 100, gap: 10},
+        {alignItems: 'center', paddingTop: 100, gap: 5},
       ]}
       colors={[globalVariables.color.blue0, globalVariables.color.white]}
       start={{x: 0, y: 0}}
       end={{x: 0, y: 0.5}}>
       <StackHeader />
       <ContactImage image={contactInfo?.thumbnailPath} />
-      <Text style={[style.h1, {paddingTop: 30}]}>
+      <Text style={[style.h1, {paddingTop: 50}]}>
         {contactInfo?.displayName}
       </Text>
-      <Text style={style.h2}>{contactInfo?.phoneNumbers[0]?.number}</Text>
+      <Text style={[style.h2, {paddingTop: 10}]}>
+        {contactInfo?.phoneNumbers[0]?.number}
+      </Text>
+      <Text style={style.h2}>{contactInfo?.emailAddresses[0]?.email}</Text>
       <EditButton userId={route.params.userId} />
       {/* <Text>{`${contactInfo}`}</Text> */}
     </LinearGradient>

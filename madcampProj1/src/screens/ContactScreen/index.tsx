@@ -6,7 +6,7 @@ import Contacts, {Contact} from 'react-native-contacts';
 
 import {BottomTabParamsList} from '@src/navigation/MainTabs';
 
-import ContactList from '@src/components/ContactComponents/ContactList';
+import ContactList from '@src/components/ContactComponents/ContactScreenComponents/ContactList';
 
 import style from '@src/styles/style';
 

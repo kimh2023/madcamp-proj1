@@ -35,10 +35,9 @@ function SaveButton({contact}: {contact: Contact | null}) {
         });
       });
     } else {
-      //   Contacts.getContactById(route.params.userId).then(nativeContact => {
-      //     console.log('Contact: ', nativeContact);
-      //     setContactInfo(nativeContact);
-      //   });
+      Contacts.updateContact(contact as Contact).then(() => {
+        console.log('Contact Update: ', contact);
+      });
     }
 
     navigation.navigate('ContactDetailsScreen', {

@@ -6,7 +6,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 15,
+    gap: globalVariables.gap.verticalGap,
   },
   screenDefaults: {flex: 1, flexDirection: 'column', gap: 15},
   h1: {
@@ -33,7 +33,7 @@ const style = StyleSheet.create({
     borderWidth: 2.2,
     borderColor: globalVariables.color.blue1,
     borderRadius: 50,
-    paddingVertical: 7,
+    height: 40,
     paddingHorizontal: 18,
     flex: 1,
   },

@@ -25,7 +25,7 @@ function ContactList({dataRows}: {dataRows: Contact[]}) {
     return (
       <ContactListItem
         id={data.rawContactId}
-        name={data.givenName}
+        name={data.displayName}
         number={data.phoneNumbers[0]?.number}
         favorite={data.isStarred}
         image={data.thumbnailPath}
