@@ -15,5 +15,7 @@ module.exports = {
     'unused-imports/no-unused-imports': 'warn',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['warn'],
+    'spaced-comment': 'warn',
+    'react-native/no-inline-styles': 'off',
   },
 };

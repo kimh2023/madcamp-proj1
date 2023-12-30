@@ -4,6 +4,8 @@ import {Dimensions, View} from 'react-native';
 import {Contact} from 'react-native-contacts';
 import {DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview';
 
+import style from '@src/styles/style';
+
 function ContactList({dataRows}: {dataRows: Contact[]}) {
   let width = Math.round(Dimensions.get('window').width * 1000) / 1000;
   let dataProvider = new DataProvider((r1, r2) => {
@@ -24,7 +26,7 @@ function ContactList({dataRows}: {dataRows: Contact[]}) {
       <ContactListItem
         id={data.rawContactId}
         name={data.givenName}
-        number={data.phoneNumbers[0].number}
+        number={data.phoneNumbers[0]?.number}
         favorite={data.isStarred}
         image={data.thumbnailPath}
       />
@@ -32,8 +34,7 @@ function ContactList({dataRows}: {dataRows: Contact[]}) {
   };
 
   return (
-    <View style={{minHeight: 1, minWidth: 1}}>
-      {/* will work only sometimes for some reason */}
+    <View style={[style.screenDefaults, {minHeight: 1, minWidth: 1}]}>
       <RecyclerListView
         dataProvider={dataProvider.cloneWithRows(dataRows)}
         layoutProvider={layoutProvider}

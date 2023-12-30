@@ -1,8 +1,14 @@
+import {globalVariables} from './globalVariables';
 import {StyleSheet} from 'react-native';
 
 const style = StyleSheet.create({
-  containerDefaults: {flexDirection: 'row', alignItems: 'center', gap: 15},
-  screenDefaults: {flexDirection: 'column', gap: 15},
+  containerDefaults: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 15,
+  },
+  screenDefaults: {flex: 1, flexDirection: 'column', gap: 15},
   h1: {
     fontFamily: 'Pretendard-Bold',
     fontSize: 25,
@@ -19,8 +25,17 @@ const style = StyleSheet.create({
     fontFamily: 'Pretendard-ExtraBold',
     fontSize: 12,
   },
-  highlight: {
-    fontWeight: '700',
+  button: {
+    fontFamily: 'Pretendard-ExtraBold',
+    fontSize: 17,
+  },
+  input: {
+    borderWidth: 2.2,
+    borderColor: globalVariables.color.blue1,
+    borderRadius: 50,
+    paddingVertical: 7,
+    paddingHorizontal: 18,
+    flex: 1,
   },
 });
 

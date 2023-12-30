@@ -1,5 +1,14 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M20 36C28.8366 36 36 28.8366 36 20C36 11.1634 28.8366 4 20 4C11.1634 4 4 11.1634 4 20C4 28.8366 11.1634 36 20 36Z" fill="#8FA8FF"/>
-<path d="M12 26.664C12 24 17.336 22.528 20 22.528C22.664 22.528 28 23.992 28 26.664V28H12" fill="white"/>
-<path d="M24 16C24 18.208 22.208 20 20 20C17.792 20 16 18.208 16 16C16 13.792 17.792 12 20 12C22.208 12 24 13.792 24 16Z" fill="white"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 28.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#8FA8FF;}
+	.st1{fill:#FFFFFF;}
+</style>
+<g>
+	<path class="st0" d="M20,40c11,0,20-9,20-20S31,0,20,0S0,9,0,20S9,40,20,40z"/>
+	<path class="st1" d="M10,28.3c0-3.3,6.7-5.2,10-5.2s10,1.8,10,5.2V30H10"/>
+	<path class="st1" d="M25,15c0,2.8-2.2,5-5,5s-5-2.2-5-5s2.2-5,5-5S25,12.2,25,15z"/>
+</g>
 </svg>
