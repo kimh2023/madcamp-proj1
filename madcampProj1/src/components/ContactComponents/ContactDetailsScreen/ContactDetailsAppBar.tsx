@@ -28,7 +28,6 @@ function ContactDetailsAppBar({
     }
     Linking.openURL(`tel:${phoneNumber}`);
   };
-
   return (
     <View style={[style.containerDefaults, {marginTop: 20, gap: 20}]}>
       <Pressable onPress={handlePhone}>
@@ -41,4 +40,4 @@ function ContactDetailsAppBar({
   );
 }
 
-export default ContactDetailsAppBar;
+export default React.memo(ContactDetailsAppBar);

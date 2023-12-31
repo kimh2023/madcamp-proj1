@@ -24,7 +24,7 @@ function ContactList({dataRows}: {dataRows: Contact[]}) {
   let rowRenderer = (type: string | number, data: any, index: number) => {
     return (
       <ContactListItem
-        id={data.rawContactId}
+        id={data.recordID}
         name={data.displayName}
         number={data.phoneNumbers[0]?.number}
         favorite={data.isStarred}

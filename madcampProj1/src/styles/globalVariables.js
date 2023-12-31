@@ -7,7 +7,7 @@ export const globalVariables = {
   },
   margin: {
     horizontalMargin: 40,
-    buttonMargin: 25,
+    buttonMargin: 30,
   },
   gap: {
     verticalGap: 15,

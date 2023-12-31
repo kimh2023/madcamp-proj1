@@ -25,10 +25,14 @@ function SaveButton({contact}: {contact: Contact | null}) {
           userId: res?.recordID as string,
         });
       });
-    } else {
-      Contacts.updateContact(contact as Contact).then(() => {
-        console.log('Contact Update: ', contact);
-      });
+    } else if (contact) {
+      Contacts.updateContact(contact)
+        .then(() => {
+          console.log('Contact Update: ', contact);
+        })
+        .catch(error => {
+          console.error('Contact Update Error: ', error);
+        });
       navigation.navigate('ContactDetailsScreen', {
         userId: contact?.recordID as string,
       });
@@ -40,8 +44,9 @@ function SaveButton({contact}: {contact: Contact | null}) {
         PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
         {
           title: '몰입캠프 프로젝트 1',
-          message: '<몰입캠프 프로젝트 1>이 연락처 데이터를 요구합니다.',
-          buttonPositive: '<몰입캠프 프로젝트 1>에게 연락처 데이터를 주세요.',
+          message: '<몰입캠프 프로젝트 1>이 연락처 데이터 변경을 요구합니다.',
+          buttonPositive:
+            '<몰입캠프 프로젝트 1>에게 연락처 데이터 변경 권한을 주세요.',
         },
       ).then(res => {
         console.log('Permission: ', res);

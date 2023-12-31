@@ -74,6 +74,18 @@ function ContactDetailsScreen({route, navigation}: Props) {
     }, [memoizedGetContactInfo]),
   );
 
+  const setContactInfoCallback = useCallback(
+    () =>
+      setContactInfo(
+        prevState =>
+          ({
+            ...prevState,
+            isStarred: !prevState?.isStarred,
+          } as Contact),
+      ),
+    [],
+  );
+
   return (
     <LinearGradient
       style={[
@@ -88,17 +100,25 @@ function ContactDetailsScreen({route, navigation}: Props) {
       <Text style={[style.h1, {paddingTop: 50}]}>
         {contactInfo?.displayName}
       </Text>
-      <Text style={[style.h2, {paddingTop: 10}]}>
-        {contactInfo?.phoneNumbers[0]?.number}
-      </Text>
-      <Text style={style.h2}>{contactInfo?.emailAddresses[0]?.email}</Text>
+      {contactInfo?.phoneNumbers[0]?.number && (
+        <Text style={[style.h2, {paddingTop: 10}]}>
+          {contactInfo?.phoneNumbers[0]?.number}
+        </Text>
+      )}
+      {contactInfo?.emailAddresses[0]?.email && (
+        <Text style={style.h2}>{contactInfo?.emailAddresses[0]?.email}</Text>
+      )}
       <ContactDetailsAppBar
         phoneNumber={contactInfo?.phoneNumbers[0]?.number}
       />
-      <ContactDetailsEditBar userId={route.params.userId} />
+      <ContactDetailsEditBar
+        userId={route.params.userId}
+        contactInfo={contactInfo}
+        setContactInfoCallback={setContactInfoCallback}
+      />
       {/* <Text>{`${contactInfo}`}</Text> */}
     </LinearGradient>
   );
 }
 
-export default ContactDetailsScreen;
+export default React.memo(ContactDetailsScreen);

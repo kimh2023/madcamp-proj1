@@ -14,13 +14,13 @@ const returnObject = (
   innerAttribute?: editItemType['innerAttribute'],
 ) => {
   switch (innerAttribute) {
-    // id 있다
+    // id 있다, 그리고 string으로 해야 package에서 conversion할 때 잘 작동한다
     case 'number':
-      return {id: index, label: 'mobile', number: value} as valueListItem;
+      return {id: `${index}`, label: 'mobile', number: value} as valueListItem;
     case 'email':
-      return {id: index, label: 'home', email: value} as valueListItem;
+      return {id: `${index}`, label: 'home', email: value} as valueListItem;
     default:
-      return {id: index, label: 'mobile', number: value} as valueListItem;
+      return {id: `${index}`, label: 'mobile', number: value} as valueListItem;
   }
 };
 

@@ -1,0 +1,22 @@
+{
+  "company": "",
+  "department": null,
+  "displayName": "Last Name First Name",
+  "emailAddresses": [],
+  "familyName": "First Name",
+  "givenName": "Last Name",
+  "hasThumbnail": false,
+  "imAddresses": [],
+  "isStarred": true,
+  "jobTitle": null,
+  "middleName": "",
+  "note": null,
+  "phoneNumbers": [],
+  "postalAddresses": [],
+  "prefix": null,
+  "rawContactId": "9",
+  "recordID": "9",
+  "suffix": null,
+  "thumbnailPath": "",
+  "urlAddresses": []
+}
