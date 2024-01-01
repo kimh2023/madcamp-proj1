@@ -35,19 +35,6 @@ function MysteryScreen() {
     // TextDetectionModule.recognizeImage();
     const text = detectText(frame);
     console.log(text);
-
-    // runAsync(frame, () => {
-    //   'worklet';
-    //   console.log("I'm running asynchronously, possibly at a lower FPS rate!");
-    //   TextDetectionModule.recognizeImage();
-    // });
-
-    // console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`);
-    // const scannedOcr = scanOCR(frame);
-    //TextDetectionPlugin
-    //detectText
-
-    // console.log(scanResult);
   }, []);
 
   if (!hasPermission || device == null) {
@@ -71,6 +58,8 @@ function MysteryScreen() {
         device={device}
         isActive={isActive}
         frameProcessor={frameProcessor}
+        pixelFormat={'yuv'} // let's hope that this doesn't break on different devices
+        fps={1}
       />
     </View>
   );
