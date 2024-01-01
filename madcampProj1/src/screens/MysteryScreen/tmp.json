@@ -1,0 +1,22 @@
+{
+  "0": {
+    "boundingBox": {"bottom": 299, "left": -5, "right": 356, "top": -38},
+    "cornerPoints": {
+      "0": {"x": 6, "y": 1263},
+      "1": ["Object"],
+      "2": ["Object"],
+      "3": ["Object"]
+    },
+    "frame": {
+      "boundingCenterX": 175,
+      "boundingCenterY": 130,
+      "height": 337,
+      "width": 361,
+      "x": 175.5,
+      "y": 130.5
+    },
+    "lines": {"0": ["Object"], "1": ["Object"], "2": ["Object"]},
+    "recognizedLanguages": {"0": "und"},
+    "text": "if (!hareturVie"
+  }
+}

@@ -145,7 +145,6 @@ class TextDetectionPlugin(options: Map<String, Any>?) : FrameProcessorPlugin(opt
       val task: Task<Text> = recognizer.process(image)
       try {
         val text: Text = Tasks.await(task)
-        //  OCRFrameProcessorPlugin.logExtrasForTesting(text)
         result["text"] = text.text
         result["blocks"] = getBlockArray(text.textBlocks)
       } catch (e: Exception) {

@@ -114,7 +114,7 @@ function MainTabs(): React.JSX.Element {
       <Tab.Screen
         name="MysteryScreen"
         component={MysteryScreen}
-        options={{title: '???'}}
+        options={{title: '???', headerShown: false}}
       />
     </Tab.Navigator>
   );
