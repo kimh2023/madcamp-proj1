@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
+import {NativeModules} from 'react-native';
 import {
   Camera,
+  runAsync,
   useCameraDevice,
   useCameraPermission,
   useFrameProcessor,
 } from 'react-native-vision-camera';
-import {ScanConfig, recognize} from 'vision-camera-dynamsoft-label-recognizer';
+
+const {TextDetectionModule} = NativeModules;
 
 function MysteryScreen() {
   const [isActive, setIsActive] = useState(false);
@@ -30,11 +33,18 @@ function MysteryScreen() {
 
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
+    // TextDetectionModule.recognizeImage();
+    console.log(TextDetectionModule);
+
+    runAsync(frame, () => {
+      'worklet';
+      console.log("I'm running asynchronously, possibly at a lower FPS rate!");
+      TextDetectionModule.recognizeImage();
+    });
+
     // console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`);
     // const scannedOcr = scanOCR(frame);
-    let config: ScanConfig = {};
-    config.includeImageBase64 = true;
-    const scanResult = recognize(frame, config);
+
     // console.log(scanResult);
   }, []);
 
