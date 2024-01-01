@@ -7,6 +7,7 @@ import {
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   AppState,
+  Keyboard,
   PermissionsAndroid,
   Platform,
   Pressable,
@@ -38,6 +39,7 @@ function ContactScreen({route, navigation}: Props) {
   const [appState, setAppState] = useState('startup');
   const getContacts = useCallback(async () => {
     setSearchTerm('');
+    Keyboard.dismiss();
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
         title: '몰입캠프 프로젝트 1',

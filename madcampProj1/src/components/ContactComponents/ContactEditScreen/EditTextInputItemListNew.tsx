@@ -65,7 +65,7 @@ function EditTextInputItemListNew({
       }}>
       <TextInput
         ref={textInputRef}
-        style={[style.input, style.h2]}
+        style={[style.input, style.h3]}
         value={value}
         onChangeText={text => handleTextChange(text)}
         onBlur={handleTextChangeEnd}

@@ -101,12 +101,12 @@ function ContactDetailsScreen({route, navigation}: Props) {
         {contactInfo?.displayName}
       </Text>
       {contactInfo?.phoneNumbers[0]?.number && (
-        <Text style={[style.h2, {paddingTop: 10}]}>
+        <Text style={[style.h3, {paddingTop: 10}]}>
           {contactInfo?.phoneNumbers[0]?.number}
         </Text>
       )}
       {contactInfo?.emailAddresses[0]?.email && (
-        <Text style={style.h2}>{contactInfo?.emailAddresses[0]?.email}</Text>
+        <Text style={style.h3}>{contactInfo?.emailAddresses[0]?.email}</Text>
       )}
       <ContactDetailsAppBar
         phoneNumber={contactInfo?.phoneNumbers[0]?.number}

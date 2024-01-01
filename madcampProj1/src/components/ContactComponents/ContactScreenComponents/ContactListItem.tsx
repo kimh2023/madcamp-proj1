@@ -69,7 +69,7 @@ function ContactListItem({id, name, number, favorite, image}: Props) {
               <FavoriteFalse width={15} height={15} />
             )}
           </View>
-          <Text style={style.h3}>{number}</Text>
+          <Text style={style.h4}>{number}</Text>
         </View>
       </View>
     </Pressable>

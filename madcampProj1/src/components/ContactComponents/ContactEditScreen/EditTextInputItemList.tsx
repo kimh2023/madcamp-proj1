@@ -33,7 +33,7 @@ function EditTextInputItemList({
           height: style.input.height,
           justifyContent: 'center',
         }}>
-        <Text style={style.h2}>{title}</Text>
+        <Text style={style.h3}>{title}</Text>
       </View>
       <View
         style={{

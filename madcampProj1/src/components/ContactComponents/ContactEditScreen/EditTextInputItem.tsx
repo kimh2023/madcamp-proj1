@@ -21,10 +21,10 @@ function EditTextInputItem({
   return (
     <View style={[style.containerDefaults, {width: '100%'}]}>
       <View style={{width: 40}}>
-        <Text style={style.h2}>{title}</Text>
+        <Text style={style.h3}>{title}</Text>
       </View>
       <TextInput
-        style={[style.input, style.h2]}
+        style={[style.input, style.h3]}
         value={value}
         onChangeText={text => handleTextChange(text)}
       />

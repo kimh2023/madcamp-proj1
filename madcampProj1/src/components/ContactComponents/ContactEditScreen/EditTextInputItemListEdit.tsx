@@ -55,7 +55,7 @@ function EditTextInputItemListEdit({
   return (
     <View style={{flexDirection: 'row', gap: 10}}>
       <TextInput
-        style={[style.input, style.h2, {flex: 1}]}
+        style={[style.input, style.h3, {flex: 1}]}
         value={value}
         onChangeText={text => handleTextChange(text)}
         onBlur={handleTextChangeEnd}

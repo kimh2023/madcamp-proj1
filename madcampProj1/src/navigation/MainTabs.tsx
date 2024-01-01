@@ -67,13 +67,14 @@ function MainTabs(): React.JSX.Element {
         tabBarStyle: {
           height: 120,
           paddingTop: 20,
-          paddingBottom: 40,
+          paddingBottom: 30,
           borderTopWidth: 0,
           elevation: 0,
         },
         tabBarLabelStyle: style.tabBar,
         tabBarActiveTintColor: globalVariables.color.blue1,
         tabBarInactiveTintColor: globalVariables.color.dark,
+        tabBarHideOnKeyboard: true,
         // tabBarVisible: route ? route.state.index <= 0 : true,
         headerStyle: {
           height: 120,
