@@ -1,3 +1,5 @@
+// taken from https://github.com/ismaelsousa/vision-camera-ocr/tree/v2
+
 package com.madcampproj1.textdetection
 
 import android.graphics.Point
@@ -109,7 +111,6 @@ class TextDetectionPlugin(options: Map<String, Any>?) : FrameProcessorPlugin(opt
   }
 
   override fun callback(frame: Frame, arguments: Map<String, Any>?): Any? {
-    //     // code goes here
     //     val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     //     val mediaImage: Image? = frame.image
     //     // val is const, var is let
@@ -120,7 +121,6 @@ class TextDetectionPlugin(options: Map<String, Any>?) : FrameProcessorPlugin(opt
 
     //     val result : MutableMap<String, String> = mutableMapOf()
     //     if (mediaImage != null) {
-    // //      returnVal = "mediaImage != null"
     //       val image = InputImage.fromMediaImage(mediaImage, rotation)
     //       val result = recognizer.process(image)
     //         .addOnSuccessListener { visionText ->
