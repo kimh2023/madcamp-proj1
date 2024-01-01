@@ -6,6 +6,7 @@ import {
   useCameraPermission,
   useFrameProcessor,
 } from 'react-native-vision-camera';
+import {ScanConfig, recognize} from 'vision-camera-dynamsoft-label-recognizer';
 
 function MysteryScreen() {
   const [isActive, setIsActive] = useState(false);
@@ -29,7 +30,12 @@ function MysteryScreen() {
 
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
-    console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`);
+    // console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`);
+    // const scannedOcr = scanOCR(frame);
+    let config: ScanConfig = {};
+    config.includeImageBase64 = true;
+    const scanResult = recognize(frame, config);
+    // console.log(scanResult);
   }, []);
 
   if (!hasPermission || device == null) {

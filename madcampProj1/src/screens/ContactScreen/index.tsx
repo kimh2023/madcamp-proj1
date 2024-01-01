@@ -18,7 +18,7 @@ import Contacts, {Contact} from 'react-native-contacts';
 
 import {BottomTabParamsList} from '@src/navigation/MainTabs';
 
-import ContactList from '@src/components/ContactComponents/ContactScreenComponents/ContactList';
+import ContactList from '@src/components/ContactComponents/ContactScreen/ContactList';
 
 import CloseIcon from '@src/assets/icons/icon-close.svg';
 import PlusButton from '@src/assets/icons/icon-plus.svg';

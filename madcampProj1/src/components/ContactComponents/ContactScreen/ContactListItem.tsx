@@ -5,8 +5,7 @@ import React from 'react';
 import {Image, Pressable, Text, View} from 'react-native';
 
 import ContactIcon from '@src/assets/icons/contact-icon.svg';
-import FavoriteFalse from '@src/assets/icons/favorite-false.svg';
-import FavoriteTrue from '@src/assets/icons/favorite-true.svg';
+import Favorite from '@src/assets/icons/favorite.svg';
 
 import {globalVariables} from '@src/styles/globalVariables';
 import style from '@src/styles/style';
@@ -63,11 +62,16 @@ function ContactListItem({id, name, number, favorite, image}: Props) {
               {gap: 5, justifyContent: 'flex-start'},
             ]}>
             <Text style={style.h2}>{name}</Text>
-            {favorite ? (
-              <FavoriteTrue width={15} height={15} />
-            ) : (
-              <FavoriteFalse width={15} height={15} />
-            )}
+            <Favorite
+              fill={
+                favorite
+                  ? globalVariables.color.blue1
+                  : globalVariables.color.white
+              }
+              stroke={globalVariables.color.blue1}
+              width={15}
+              height={15}
+            />
           </View>
           <Text style={style.h4}>{number}</Text>
         </View>

@@ -32,7 +32,6 @@ const style = StyleSheet.create({
   tabBar: {
     fontFamily: 'Pretendard-ExtraBold',
     fontSize: 10,
-    color: globalVariables.color.dark,
   },
   button: {
     fontFamily: 'Pretendard-ExtraBold',

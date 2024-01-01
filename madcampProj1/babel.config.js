@@ -13,7 +13,7 @@ module.exports = {
     [
       'react-native-reanimated/plugin',
       // {
-      //   globals: ['__scanCodes'],
+      //   globals: ['__scanOCR'],
       // },
     ],
     ['react-native-worklets-core/plugin'],
