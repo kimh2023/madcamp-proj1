@@ -1,3 +1,4 @@
+import {detectText} from '@src/utils/TextDetection';
 import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import {NativeModules} from 'react-native';
@@ -8,8 +9,6 @@ import {
   useCameraPermission,
   useFrameProcessor,
 } from 'react-native-vision-camera';
-
-const {TextDetectionModule} = NativeModules;
 
 function MysteryScreen() {
   const [isActive, setIsActive] = useState(false);
@@ -34,16 +33,19 @@ function MysteryScreen() {
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
     // TextDetectionModule.recognizeImage();
-    console.log(TextDetectionModule);
+    const text = detectText(frame);
+    console.log(text);
 
-    runAsync(frame, () => {
-      'worklet';
-      console.log("I'm running asynchronously, possibly at a lower FPS rate!");
-      TextDetectionModule.recognizeImage();
-    });
+    // runAsync(frame, () => {
+    //   'worklet';
+    //   console.log("I'm running asynchronously, possibly at a lower FPS rate!");
+    //   TextDetectionModule.recognizeImage();
+    // });
 
     // console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`);
     // const scannedOcr = scanOCR(frame);
+    //TextDetectionPlugin
+    //detectText
 
     // console.log(scanResult);
   }, []);

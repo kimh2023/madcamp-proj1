@@ -22,7 +22,7 @@ class MainApplication : Application(), ReactApplication {
           return PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // packages.add(new MyReactNativePackage());
-              add(MyAppPackage())
+              add(com.madcampproj1.textdetection.TextDetectionPluginPackage())
           }
         }
 
