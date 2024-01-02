@@ -7,6 +7,7 @@
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
+import {LogBox} from 'react-native';
 
 import MainTabs from '@src/navigation/MainTabs';
 
@@ -33,6 +34,8 @@ const MyTheme = {
 };
 
 function App(): React.JSX.Element {
+  LogBox.ignoreLogs(['new NativeEventEmitter']);
+
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
