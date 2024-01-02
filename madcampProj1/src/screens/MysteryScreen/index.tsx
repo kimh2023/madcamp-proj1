@@ -1,110 +1,14 @@
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {useIsFocused} from '@react-navigation/native';
-import {detectText} from '@src/utils/TextDetection';
-import React, {useCallback, useEffect, useState} from 'react';
-import {LayoutChangeEvent, Pressable, Text, View} from 'react-native';
-import {
-  Camera,
-  CameraRuntimeError,
-  useCameraDevice,
-  useCameraFormat,
-  useCameraPermission,
-  useFrameProcessor,
-} from 'react-native-vision-camera';
-import {Worklets, useSharedValue} from 'react-native-worklets-core';
+import React from 'react';
+import {View} from 'react-native';
 
 import {BottomTabParamsList} from '@src/navigation/MainTabs';
 
-import OCRAppBar from '@src/components/MysteryComponents/AppBar';
-import TextOverlay from '@src/components/MysteryComponents/TextOverlay';
-
-import BackIcon from '@src/assets/icons/icon-back.svg';
+import MysteryCamera from '@src/components/MysteryComponents/MysteryCamera';
 
 type Props = BottomTabScreenProps<BottomTabParamsList, 'MysteryScreen', 'Tab'>;
 
 function MysteryScreen({route, navigation}: Props) {
-  const [isCameraInitialized, setIsCameraInitialized] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-  const {hasPermission, requestPermission} = useCameraPermission();
-  const device = useCameraDevice('back');
-  const isFocused = useIsFocused();
-  const onInitialized = useCallback(() => {
-    setIsCameraInitialized(true);
-  }, []);
-
-  // handling results
-  const [result, setResult] = useState<{text: string; blocks: any}>();
-  const setResultJS = Worklets.createRunInJsFn(setResult);
-
-  const [cameraDimensions, setCameraDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
-  const frameDimensions = useSharedValue({width: 600, height: 360});
-  const format = useCameraFormat(device, [
-    // {
-    //   photoResolution: 'max',
-    // },
-    // {photoAspectRatio: cameraDimensions.height / cameraDimensions.width},
-    // {
-    //   videoResolution: {
-    //     width: cameraDimensions.width,
-    //     height: cameraDimensions.height,
-    //   },
-    // },
-    // {
-    //   photoResolution: {
-    //     width: cameraDimensions.width,
-    //     height: cameraDimensions.height,
-    //   },
-    // },
-    // {videoResolution: 'max'},
-    // {photoResolution: 'max'},
-  ]);
-
-  useEffect(() => {
-    if (isCameraInitialized) {
-      // without setTimeout, the camera will not open on init
-      setTimeout(() => {
-        setIsActive(true);
-      }, 1000);
-    }
-    setIsActive(false);
-  }, [isCameraInitialized]);
-
-  useEffect(() => {
-    requestPermission();
-  }, [requestPermission]);
-
-  const onError = useCallback((error: CameraRuntimeError) => {
-    console.error(error);
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', () => {
-      setIsActive(false);
-    });
-    return unsubscribe;
-  }, [navigation]);
-
-  const frameProcessor = useFrameProcessor(frame => {
-    'worklet';
-    frameDimensions.value = {width: frame.width, height: frame.height};
-    const text = detectText(frame) as {
-      result: {text: string; blocks: any};
-    };
-    setResultJS(text?.result);
-  }, []);
-
-  if (!hasPermission || device === undefined || device === null) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>이 탭을 쓰려면 카메라 권한이 필요합니다!</Text>
-      </View>
-    );
-  }
-  // console.log(cameraDimensions);
-
   return (
     <View
       style={{
@@ -112,7 +16,7 @@ function MysteryScreen({route, navigation}: Props) {
         // justifyContent: 'center',
         // alignItems: 'center',
       }}>
-      <View
+      {/* <View
         style={{
           position: 'absolute',
           top: 20,
@@ -122,33 +26,8 @@ function MysteryScreen({route, navigation}: Props) {
         <Pressable onPress={() => navigation.goBack()}>
           <BackIcon width={35} height={35} />
         </Pressable>
-      </View>
-      <TextOverlay
-        blocks={result?.blocks}
-        frameDimensions={frameDimensions}
-        cameraDimensions={cameraDimensions}
-      />
-      <Camera
-        onError={onError}
-        style={{flex: 1}}
-        // style={StyleSheet.absoluteFill}
-        device={device}
-        isActive={isActive && isFocused && isCameraInitialized}
-        frameProcessor={frameProcessor}
-        pixelFormat={'yuv'} // let's hope that this doesn't break on different devices
-        orientation={'portrait'}
-        onLayout={(event: LayoutChangeEvent) => {
-          setCameraDimensions({
-            height: event.nativeEvent.layout.height,
-            width: event.nativeEvent.layout.width,
-          });
-        }}
-        format={format}
-        // resizeMode={'contain'}
-        // fps={1}
-        onInitialized={onInitialized}
-      />
-      <OCRAppBar text={result?.text} />
+      </View> */}
+      <MysteryCamera navigation={navigation} />
     </View>
   );
 }

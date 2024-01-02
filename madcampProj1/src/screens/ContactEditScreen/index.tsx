@@ -1,13 +1,7 @@
 import {ContactStackParamsList} from '../../../App';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-  AppState,
-  PermissionsAndroid,
-  Platform,
-  ScrollView,
-  View,
-} from 'react-native';
+import {PermissionsAndroid, Platform, ScrollView} from 'react-native';
 import Contacts, {
   Contact,
   EmailAddress,
@@ -15,10 +9,10 @@ import Contacts, {
 } from 'react-native-contacts';
 import LinearGradient from 'react-native-linear-gradient';
 
+import EditImageInput from '@src/components/ContactComponents/ContactEditScreen/EditImageInput';
 import EditTextInput from '@src/components/ContactComponents/ContactEditScreen/EditTextInput';
 import {valueListItem} from '@src/components/ContactComponents/ContactEditScreen/EditTextInputGroup';
 import SaveButton from '@src/components/ContactComponents/ContactEditScreen/SaveButton';
-import ContactImage from '@src/components/ContactComponents/ContactImage';
 import StackHeader from '@src/components/LayoutComponents/StackHeader';
 
 import {globalVariables} from '@src/styles/globalVariables';
@@ -34,6 +28,13 @@ function ContactEditScreen({route, navigation}: Props) {
   const [contactInfo, setContactInfo] = useState<Contact | null>(null);
   const [startEdit, setStartEdit] = useState<boolean>(false);
   const [appState, setAppState] = useState('startup');
+  const [thumbnailPath, setThumbnailPath] = useState<{
+    url?: string;
+    originalPath?: string;
+  }>({
+    url: undefined,
+    originalPath: undefined,
+  });
   const getContactInfo = useCallback(async () => {
     if (route.params.userId.includes('newUser')) {
       const nativeContact = {
@@ -55,14 +56,16 @@ function ContactEditScreen({route, navigation}: Props) {
       }).then(res => {
         console.log('Permission for ContactEditScreen: ', res);
         Contacts.getContactById(route.params.userId).then(nativeContact => {
-          console.log('Contact: ', nativeContact);
+          console.log('Contact Edit Page: ', nativeContact);
           setContactInfo(nativeContact);
+          setThumbnailPath({url: nativeContact?.thumbnailPath});
         });
       });
     } else {
       Contacts.getContactById(route.params.userId).then(nativeContact => {
-        console.log('Contact: ', nativeContact);
+        console.log('Contact Edit Page: ', nativeContact);
         setContactInfo(nativeContact);
+        setThumbnailPath({url: nativeContact?.thumbnailPath});
       });
     }
   }, [route.params.userId]);
@@ -76,21 +79,7 @@ function ContactEditScreen({route, navigation}: Props) {
       return;
     }
     memoizedGetContactInfo(); // call when component mounts
-
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (
-        appState.match(/inactive|background|startup/) &&
-        nextAppState === 'active'
-      ) {
-        memoizedGetContactInfo();
-      }
-      setAppState(nextAppState);
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [appState, startEdit, memoizedGetContactInfo, route.params.userId]);
+  }, [startEdit, memoizedGetContactInfo, route.params.userId]);
 
   // 최적화!
   const setStartEditCallback = useCallback(() => setStartEdit(true), []);
@@ -103,6 +92,14 @@ function ContactEditScreen({route, navigation}: Props) {
             [attribute]: changedValue,
           } as Contact),
       ),
+    [],
+  );
+  const setThumbnailCallback = useCallback(
+    (originalPath: string, uriPath: string) => {
+      setThumbnailPath({url: uriPath, originalPath: originalPath});
+      setStartEdit(true);
+      // console.log(thumbnailPath);
+    },
     [],
   );
 
@@ -125,16 +122,22 @@ function ContactEditScreen({route, navigation}: Props) {
           colors={[globalVariables.color.blue0, globalVariables.color.white]}
           start={{x: 0, y: 0}}
           end={{x: 0, y: 0.5}}>
-          <View style={{backgroundColor: 'red'}}>
-            <ContactImage image={contactInfo?.thumbnailPath} />
-          </View>
+          {contactInfo && (
+            <EditImageInput
+              setThumbnail={setThumbnailCallback}
+              thumbnailPath={thumbnailPath}
+            />
+          )}
 
           <EditTextInput
             setStartEdit={setStartEditCallback}
             setContactInfo={setContactInfoCallback}
             contactInfo={contactInfo}
           />
-          <SaveButton contact={contactInfo} />
+          <SaveButton
+            contact={contactInfo}
+            thumbnailPath={thumbnailPath.originalPath}
+          />
         </LinearGradient>
       </ScrollView>
     </React.Fragment>
