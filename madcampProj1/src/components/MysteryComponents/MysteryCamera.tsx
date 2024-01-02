@@ -1,5 +1,5 @@
 import OCRAppBar from './OCRAppBar';
-import TextOverlay from './TextOverlay';
+// import TextOverlay from './TextOverlay';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {useIsFocused} from '@react-navigation/native';
 import {detectText} from '@src/utils/TextDetection';
@@ -104,15 +104,16 @@ function MysteryCamera({
     );
   }
   // console.log(cameraDimensions);
+  console.log(result);
 
   return (
     <ViewShot ref={screenShotRef} style={{flex: 1}} options={{format: 'jpg'}}>
       <View style={{flex: 1}}>
-        <TextOverlay
+        {/* <TextOverlay
           blocks={result?.blocks}
           frameDimensions={frameDimensions}
           cameraDimensions={cameraDimensions}
-        />
+        /> */}
         <Camera
           photo={true}
           onError={onError}

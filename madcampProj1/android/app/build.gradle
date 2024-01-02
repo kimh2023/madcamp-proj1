@@ -109,6 +109,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     implementation 'com.google.mlkit:text-recognition:16.0.0'
+    implementation 'com.google.mlkit:translate:17.0.2'
     implementation "androidx.camera:camera-core:1.1.0-alpha08"
 
     if (hermesEnabled.toBoolean()) {

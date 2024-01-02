@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {PermissionsAndroid, Platform, Pressable, View} from 'react-native';
+import {
+  NativeModules,
+  PermissionsAndroid,
+  Platform,
+  Pressable,
+  View,
+} from 'react-native';
 import Share from 'react-native-share';
 import Tts from 'react-native-tts';
 import ViewShot from 'react-native-view-shot';
@@ -8,6 +14,8 @@ import ShareIcon from '@src/assets/icons/icon-share.svg';
 import TTSIcon from '@src/assets/icons/icon-tts.svg';
 
 import {globalVariables} from '@src/styles/globalVariables';
+
+const {ScreenShotModule} = NativeModules;
 
 const OCRAppBar = ({
   text,
@@ -44,6 +52,7 @@ const OCRAppBar = ({
             '<몰입캠프 프로젝트 1>에게 이미지 저장 권한을 요구합니다.',
         },
       ).then(result => {
+        ScreenShotModule.takeScreenShot();
         if (screenShotRef.current && screenShotRef.current.capture) {
           screenShotRef.current.capture().then((uri: string) => {
             console.log(uri);

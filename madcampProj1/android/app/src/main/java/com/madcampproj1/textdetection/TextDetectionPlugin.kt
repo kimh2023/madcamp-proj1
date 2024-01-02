@@ -7,6 +7,10 @@ import android.graphics.Rect
 import android.media.Image
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -18,6 +22,21 @@ import com.mrousavy.camera.types.Orientation
 class TextDetectionPlugin(options: Map<String, Any>?) : FrameProcessorPlugin(options) {
   private fun getBlockArray(blocks: MutableList<Text.TextBlock>): List<HashMap<String, Any?>> {
     val blockArray = mutableListOf<HashMap<String, Any?>>()
+    var translatorFlag = false
+
+    val options =
+        TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.KOREAN)
+            .build()
+    val englishKoreanTranslator = Translation.getClient(options)
+    var conditions = DownloadConditions.Builder().requireWifi().build()
+    englishKoreanTranslator
+        .downloadModelIfNeeded(conditions)
+        .addOnSuccessListener { translatorFlag = true }
+        .addOnFailureListener { exception ->
+          //
+        }
 
     for (block in blocks) {
       val blockMap = HashMap<String, Any?>()
