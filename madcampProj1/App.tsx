@@ -14,6 +14,15 @@ import MainTabs from '@src/navigation/MainTabs';
 
 import ContactDetailsScreen from '@src/screens/ContactDetailsScreen';
 import ContactEditScreen from '@src/screens/ContactEditScreen';
+import AlbumDetailScreen from '@src/screens/GalleryScreen/AlbumDetail';
+import ArtistDetailScreen from '@src/screens/GalleryScreen/ArtistDetail';
+import ImageDetailScreen from '@src/screens/GalleryScreen/ImageDetail';
+import TrackDetailScreen from '@src/screens/GalleryScreen/TrackDetail';
+
+import {
+  SearchResultItem,
+  SearchResultItem_Track,
+} from '@src/components/GalleryComponents/SearchBar';
 
 import {globalVariables} from '@src/styles/globalVariables';
 
@@ -21,6 +30,11 @@ export type ContactStackParamsList = {
   MainTabs: undefined;
   ContactDetailsScreen: {userId: string};
   ContactEditScreen: {userId: string};
+  GalleryMainScreen: undefined;
+  AlbumDetailScreen: {albumInfo: SearchResultItem};
+  ArtistDetailScreen: {artistInfo: SearchResultItem};
+  TrackDetailScreen: {trackInfo: SearchResultItem_Track};
+  ImageDetailScreen: {imageUrl: string};
 };
 
 const Stack = createNativeStackNavigator<ContactStackParamsList>();
@@ -60,6 +74,17 @@ function App(): React.JSX.Element {
           name="ContactDetailsScreen"
           component={ContactDetailsScreen}
           initialParams={{userId: '1'}}
+        />
+        <Stack.Screen
+          name="ArtistDetailScreen"
+          component={ArtistDetailScreen}
+        />
+        <Stack.Screen name="AlbumDetailScreen" component={AlbumDetailScreen} />
+        <Stack.Screen name="TrackDetailScreen" component={TrackDetailScreen} />
+        <Stack.Screen
+          name="ImageDetailScreen"
+          component={ImageDetailScreen}
+          initialParams={{imageUrl: '1'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
