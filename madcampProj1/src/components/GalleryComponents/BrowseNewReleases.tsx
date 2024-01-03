@@ -1,21 +1,10 @@
 import axios from 'axios';
 import {encode} from 'base-64';
 import React, {useEffect, useState} from 'react';
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 
-const {width} = Dimensions.get('window');
-
-const CARD_WIDTH = (width / 8) * 3;
-const CARD_HEIGHT = CARD_WIDTH;
+import {globalVariables} from '@src/styles/globalVariables';
+import style from '@src/styles/style';
 
 const BrowseNewReleases = () => {
   const [accessToken, setAccessToken] = useState('');
@@ -78,75 +67,62 @@ const BrowseNewReleases = () => {
   }, []);
 
   const renderReleaseItem = ({item}: {item: any}) => (
-    <TouchableOpacity onPress={() => handleReleasePress(item)}>
-      <View style={styles.listContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={{uri: item.images[0].url}} style={styles.image} />
-          <Text style={styles.Title}>{item.name}</Text>
-          <Text style={styles.littleTitle}>{item.artists[0].name}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
+    // <TouchableOpacity onPress={() => handleReleasePress(item)}>
+    <View style={styles.listContainer}>
+      <Image source={{uri: item.images[0].url}} style={styles.image} />
+      <Text style={[style.h2, styles.Title]}>{item.name}</Text>
+      <Text style={[style.h3, styles.littleTitle]}>{item.artists[0].name}</Text>
+    </View>
+    // </TouchableOpacity>
   );
 
-  const handleReleasePress = (release: any) => {
-    // Handle the press event, e.g., navigate to a detail screen
-    console.log('Pressed on release:', release);
-  };
-
   return (
-    <SafeAreaView>
-      <View style={styles.Container}>
-        <Text style={styles.categoryTitle}>New Releases</Text>
-        <FlatList
-          data={newReleases}
-          keyExtractor={item => item.id}
-          renderItem={renderReleaseItem}
-          style={{flex: 1}}
-          numColumns={2}
-        />
-      </View>
-    </SafeAreaView>
+    <View style={styles.Container}>
+      <Text style={[style.h2, styles.categoryTitle]}>New Releases</Text>
+      <FlatList
+        data={newReleases}
+        keyExtractor={item => item.id}
+        renderItem={renderReleaseItem}
+        style={{flex: 1}}
+        numColumns={2}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
+    height: '100%',
     backgroundColor: '#181818',
+    padding: globalVariables.margin.horizontalMargin,
   },
   listContainer: {
-    width: width / 2 - 20,
     flex: 1,
-    margin: 10,
+    display: 'flex',
+    paddingHorizontal: 10,
     borderRadius: 10,
+    gap: 8,
   },
   imageContainer: {
-    margin: 8,
     borderRadius: 8,
     overflow: 'hidden',
   },
   image: {
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
+    width: '100%',
+    height: 0,
+    paddingBottom: '100%',
     resizeMode: 'cover',
     borderRadius: 14,
   },
   Title: {
-    fontSize: 18,
-    fontWeight: 'bold',
     color: '#ffffff',
-    marginTop: 10,
   },
   littleTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginVertical: 10,
+    marginVertical: -5,
     color: '#ffffff',
   },
   categoryTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
     marginVertical: 10,
     color: '#ffffff',
   },

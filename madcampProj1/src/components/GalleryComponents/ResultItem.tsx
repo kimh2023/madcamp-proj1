@@ -9,9 +9,11 @@ import {
   View,
 } from 'react-native';
 
+import style from '@src/styles/style';
+
 const {width} = Dimensions.get('window');
 
-const CARD_WIDTH = width - 150;
+const CARD_WIDTH = width - 200;
 const CARD_HEIGHT = CARD_WIDTH;
 
 interface ResultItemProps {
@@ -23,25 +25,27 @@ interface ResultItemProps {
 const ResultItem: React.FC<ResultItemProps> = ({onPress, imageUri, title}) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.resultItem}>
-        <View style={styles.imageBox}>
-          <Image source={{uri: imageUri}} style={styles.image} />
-          <Text style={styles.title}>{`${title.substring(0, 20)}...`}</Text>
-        </View>
+      <View style={styles.imageBox}>
+        <Image
+          source={{
+            uri: imageUri
+              ? imageUri
+              : 'https://upload.wikimedia.org/wikipedia/en/3/3d/New_Jeans_%28EP%29.jpg',
+          }}
+          style={styles.image}
+        />
+        <Text style={style.h3}>{title}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  resultItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
-  },
   imageBox: {
-    overflow: 'hidden',
     alignItems: 'center',
+    display: 'flex',
+    width: CARD_WIDTH,
+    margin: 10,
   },
   image: {
     width: CARD_WIDTH,

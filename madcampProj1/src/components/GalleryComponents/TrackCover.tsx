@@ -15,7 +15,9 @@ const TrackCover = ({url}: {url: string}) => {
   };
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity
+      onPress={handlePress}
+      style={{marginTop: 90, marginBottom: 20}}>
       <Image source={{uri: url}} style={styles.cover} />
     </TouchableOpacity>
   );
@@ -23,7 +25,6 @@ const TrackCover = ({url}: {url: string}) => {
 
 const styles = StyleSheet.create({
   cover: {
-    marginVertical: 16,
     width: width - width / 4,
     height: width - width / 4,
     borderRadius: width / 16,

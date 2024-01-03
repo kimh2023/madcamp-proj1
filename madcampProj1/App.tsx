@@ -30,7 +30,6 @@ export type ContactStackParamsList = {
   MainTabs: undefined;
   ContactDetailsScreen: {userId: string};
   ContactEditScreen: {userId: string};
-  GalleryMainScreen: undefined;
   AlbumDetailScreen: {albumInfo: SearchResultItem};
   ArtistDetailScreen: {artistInfo: SearchResultItem};
   TrackDetailScreen: {trackInfo: SearchResultItem_Track};

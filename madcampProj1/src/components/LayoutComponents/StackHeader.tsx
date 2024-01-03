@@ -6,23 +6,21 @@ import {Pressable, View} from 'react-native';
 
 import BackIcon from '@src/assets/icons/icon-back.svg';
 
-function StackHeader({
-  path,
-  userId,
-}: {
-  path: keyof ContactStackParamsList;
-  userId?: string;
-}) {
+function StackHeader({path, userId}: {path: string; userId?: string}) {
   const navigation =
     useNavigation<NativeStackNavigationProp<ContactStackParamsList>>();
   const navigate = useCallback(() => {
     switch (path) {
+      case 'Back':
+        navigation.goBack();
+        return;
       case 'MainTabs':
         navigation.navigate('MainTabs');
         return;
       case 'ContactDetailsScreen':
       case 'ContactEditScreen':
         navigation.navigate(path, {userId: userId as string});
+        return;
     }
   }, [navigation, path, userId]);
   return (

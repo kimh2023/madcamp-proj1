@@ -10,6 +10,8 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
+import style from '@src/styles/style';
+
 interface Images {
   height: string;
   url: string;
@@ -108,7 +110,7 @@ const SearchBar: React.FC<SearchBarProps> = ({accessToken}) => {
         imageUri={
           item.images && item.images.length > 0 ? item.images[0].url : ''
         }
-        title={`${item.name.substring(0, 20)}...`}
+        title={item.name}
       />
     );
   };
@@ -121,50 +123,53 @@ const SearchBar: React.FC<SearchBarProps> = ({accessToken}) => {
           ? item.album.images[0].url
           : ''
       }
-      title={`${item.name.substring(0, 20)}...`}
+      title={item.name}
     />
   );
 
   return (
     <SafeAreaView style={styles.container}>
+      <SearchInput
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        onSearch={searchSpotify}
+        clearSearch={() => {
+          setSearchInput('');
+          setAlbumResults([]);
+          setArtistResults([]);
+          setTrackResults([]);
+        }}
+      />
       <FlatList
         data={[]}
         renderItem={null}
         ListEmptyComponent={
-          <View>
-            <SearchInput
-              searchInput={searchInput}
-              setSearchInput={setSearchInput}
-              onSearch={searchSpotify}
-            />
+          searchInput.length === 0 ? (
+            <BrowseNewReleases />
+          ) : (
+            <View>
+              <Text style={style.h2}>Albums</Text>
+              <ResultsList
+                data={albumResults}
+                keyExtractor={item => item.id}
+                renderItem={renderResultItem}
+              />
 
-            {searchInput.length === 0 ? (
-              <BrowseNewReleases />
-            ) : (
-              <>
-                <Text style={styles.categoryTitle}>Albums</Text>
-                <ResultsList
-                  data={albumResults}
-                  keyExtractor={item => item.id}
-                  renderItem={renderResultItem}
-                />
+              <Text style={style.h2}>Artists</Text>
+              <ResultsList
+                data={artistResults}
+                keyExtractor={item => item.id}
+                renderItem={renderResultItem}
+              />
 
-                <Text style={styles.categoryTitle}>Artists</Text>
-                <ResultsList
-                  data={artistResults}
-                  keyExtractor={item => item.id}
-                  renderItem={renderResultItem}
-                />
-
-                <Text style={styles.categoryTitle}>Tracks</Text>
-                <ResultsList
-                  data={trackResults}
-                  keyExtractor={item => item.id}
-                  renderItem={renderResultItem_Track}
-                />
-              </>
-            )}
-          </View>
+              <Text style={style.h2}>Tracks</Text>
+              <ResultsList
+                data={trackResults}
+                keyExtractor={item => item.id}
+                renderItem={renderResultItem_Track}
+              />
+            </View>
+          )
         }
       />
     </SafeAreaView>
