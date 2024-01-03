@@ -1,7 +1,12 @@
 import {ContactStackParamsList} from '../../../App';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {PermissionsAndroid, Platform, ScrollView} from 'react-native';
+import {
+  BackHandler,
+  PermissionsAndroid,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import Contacts, {
   Contact,
   EmailAddress,
@@ -102,6 +107,23 @@ function ContactEditScreen({route, navigation}: Props) {
     },
     [],
   );
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (route.params.userId.includes('newUser')) {
+          navigation.navigate('MainTabs');
+        } else {
+          navigation.navigate('ContactDetailsScreen', {
+            userId: route.params.userId,
+          });
+        }
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation, route.params.userId]);
 
   return (
     <React.Fragment>

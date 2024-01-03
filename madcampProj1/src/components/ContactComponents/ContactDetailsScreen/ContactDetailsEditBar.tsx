@@ -87,17 +87,22 @@ function ContactDetailsEditBar({
     navigation.navigate('MainTabs');
   };
   const handleShare = async () => {
-    const vcardTemplate = `BEGIN:VCARD
+    let vcardTemplate = `BEGIN:VCARD
 VERSION:3.0
-FN:${contactInfo?.givenName}
-N:${contactInfo?.displayName}
-TEL;TYPE=CELL:${
-      contactInfo?.phoneNumbers &&
-      contactInfo?.phoneNumbers.length > 0 &&
-      contactInfo?.phoneNumbers[0].number
-    }
-END:VCARD
+FN:${contactInfo?.displayName}
+N:${contactInfo?.familyName};${contactInfo?.givenName}
 `;
+    if (contactInfo?.phoneNumbers && contactInfo?.phoneNumbers.length > 0) {
+      contactInfo.phoneNumbers.forEach(phoneNumber => {
+        vcardTemplate += 'TEL;TYPE=CELL:' + phoneNumber.number + '\n';
+      });
+    }
+    if (contactInfo?.emailAddresses && contactInfo?.emailAddresses.length > 0) {
+      contactInfo.emailAddresses.forEach(emailAddress => {
+        vcardTemplate += 'EMAIL;CHARSET=UTF-8:' + emailAddress.email + '\n';
+      });
+    }
+    vcardTemplate += 'END:VCARD\n';
     const filePath = CachesDirectoryPath + '/Contact.vcf';
     try {
       await writeFile(filePath, vcardTemplate, 'utf8');
