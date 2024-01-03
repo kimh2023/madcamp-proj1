@@ -1,4 +1,4 @@
-// taken from https://github.com/ismaelsousa/vision-camera-ocr/tree/v2
+// taken from https://github.com/ismaelsousa/vision-camera-ocr/tree/v2 and modified
 
 package com.madcampproj1.textdetection
 
@@ -31,26 +31,42 @@ class TextDetectionPlugin(options: Map<String, Any>?) : FrameProcessorPlugin(opt
             .build()
     val englishKoreanTranslator = Translation.getClient(options)
     var conditions = DownloadConditions.Builder().requireWifi().build()
-    englishKoreanTranslator
-        .downloadModelIfNeeded(conditions)
-        .addOnSuccessListener { translatorFlag = true }
-        .addOnFailureListener { exception ->
-          //
+    try {
+      Tasks.await(englishKoreanTranslator.downloadModelIfNeeded(conditions))
+
+      for (block in blocks) {
+        val blockMap = HashMap<String, Any?>()
+        val task: Task<String> = englishKoreanTranslator.translate(block.text)
+        try {
+          val translatedText = Tasks.await(task)
+          blockMap["translatedText"] = translatedText
+        } catch (e: Exception) {
+          blockMap["translatedText"] = "fail at translation: $e"
         }
 
-    for (block in blocks) {
-      val blockMap = HashMap<String, Any?>()
+        blockMap["text"] = block.text
+        blockMap["recognizedLanguages"] = getRecognizedLanguages(block.recognizedLanguage)
+        blockMap["cornerPoints"] = block.cornerPoints?.let { getCornerPoints(it) }
+        blockMap["frame"] = block.boundingBox?.let { getFrame(it) }
+        blockMap["boundingBox"] = block.boundingBox?.let { getBoundingBox(it) }
+        blockMap["lines"] = getLineArray(block.lines)
 
-      blockMap["text"] = block.text
-      blockMap["recognizedLanguages"] = getRecognizedLanguages(block.recognizedLanguage)
-      blockMap["cornerPoints"] = block.cornerPoints?.let { getCornerPoints(it) }
-      blockMap["frame"] = block.boundingBox?.let { getFrame(it) }
-      blockMap["boundingBox"] = block.boundingBox?.let { getBoundingBox(it) }
-      blockMap["lines"] = getLineArray(block.lines)
-
-      blockArray.add(blockMap)
+        blockArray.add(blockMap)
+      }
+      return blockArray
+    } catch (e: Exception) {
+      return blockArray
     }
-    return blockArray
+
+    // val task: Task<Text> = recognizer.process(image)
+    // try {
+    //   val text: Text = Tasks.await(task)
+    //   result["text"] = text.text
+    //   result["blocks"] = getBlockArray(text.textBlocks)
+    // } catch (e: Exception) {
+    //   return null
+    // }
+
   }
 
   private fun getLineArray(lines: MutableList<Text.Line>): List<HashMap<String, Any?>> {

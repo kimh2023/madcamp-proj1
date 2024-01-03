@@ -4,11 +4,14 @@ import {ContactStackParamsList} from '@src/../App';
 import React, {useCallback} from 'react';
 import {PermissionsAndroid, Platform, Pressable, View} from 'react-native';
 import Contacts, {Contact} from 'react-native-contacts';
+import {CachesDirectoryPath, readFile, writeFile} from 'react-native-fs';
+import Share from 'react-native-share';
 
 // import FavoriteFalse from '@src/assets/icons/favorite-false.svg';
 // import FavoriteTrue from '@src/assets/icons/favorite-true.svg';
 import DeleteIcon from '@src/assets/icons/icon-delete.svg';
 import EditIcon from '@src/assets/icons/icon-edit.svg';
+import ShareIcon from '@src/assets/icons/icon-share.svg';
 
 import {globalVariables} from '@src/styles/globalVariables';
 import style from '@src/styles/style';
@@ -83,6 +86,38 @@ function ContactDetailsEditBar({
     }
     navigation.navigate('MainTabs');
   };
+  const handleShare = async () => {
+    const vcardTemplate = `BEGIN:VCARD
+VERSION:3.0
+FN:${contactInfo?.givenName}
+N:${contactInfo?.displayName}
+TEL;TYPE=CELL:${
+      contactInfo?.phoneNumbers &&
+      contactInfo?.phoneNumbers.length > 0 &&
+      contactInfo?.phoneNumbers[0].number
+    }
+END:VCARD
+`;
+    const filePath = CachesDirectoryPath + '/Contact.vcf';
+    try {
+      await writeFile(filePath, vcardTemplate, 'utf8');
+      const fileContent = await readFile(filePath, 'base64');
+
+      Share.open({
+        title: 'Contact.vcf',
+        url: 'file://' + filePath,
+        failOnCancel: false,
+      })
+        .then(() => {
+          console.log('Contact Share successful');
+        })
+        .catch(error => {
+          console.error('Contact Share failed:', error);
+        });
+    } catch (error) {
+      console.error('Error writing vCard:', error);
+    }
+  };
   return (
     <View
       style={[
@@ -107,6 +142,13 @@ function ContactDetailsEditBar({
       <Pressable
         onPress={() => navigation.navigate('ContactEditScreen', {userId})}>
         <EditIcon width={iconSize} height={iconSize} />
+      </Pressable>
+      <Pressable onPress={handleShare}>
+        <ShareIcon
+          width={iconSize}
+          height={iconSize}
+          fill={globalVariables.color.dark}
+        />
       </Pressable>
     </View>
   );

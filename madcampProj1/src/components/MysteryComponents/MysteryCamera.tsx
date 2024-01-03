@@ -1,5 +1,5 @@
 import OCRAppBar from './OCRAppBar';
-// import TextOverlay from './TextOverlay';
+import TextOverlay from './TextOverlay';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {useIsFocused} from '@react-navigation/native';
 import {detectText} from '@src/utils/TextDetection';
@@ -40,6 +40,7 @@ function MysteryCamera({
   // handling results
   const [result, setResult] = useState<{text: string; blocks: any}>();
   const setResultJS = Worklets.createRunInJsFn(setResult);
+  const [isTranslate, setIsTranslate] = useState(false);
 
   const [cameraDimensions, setCameraDimensions] = useState({
     width: 0,
@@ -104,16 +105,17 @@ function MysteryCamera({
     );
   }
   // console.log(cameraDimensions);
-  console.log(result);
+  // console.log(result);
 
   return (
     <ViewShot ref={screenShotRef} style={{flex: 1}} options={{format: 'jpg'}}>
       <View style={{flex: 1}}>
-        {/* <TextOverlay
+        <TextOverlay
           blocks={result?.blocks}
           frameDimensions={frameDimensions}
           cameraDimensions={cameraDimensions}
-        /> */}
+          isTranslate={isTranslate}
+        />
         <Camera
           photo={true}
           onError={onError}
@@ -135,7 +137,12 @@ function MysteryCamera({
           // fps={1}
           onInitialized={onInitialized}
         />
-        <OCRAppBar text={result?.text} screenShotRef={screenShotRef} />
+        <OCRAppBar
+          text={result?.text}
+          screenShotRef={screenShotRef}
+          isTranslate={isTranslate}
+          setIsTranslate={() => setIsTranslate(prev => !prev)}
+        />
       </View>
     </ViewShot>
   );

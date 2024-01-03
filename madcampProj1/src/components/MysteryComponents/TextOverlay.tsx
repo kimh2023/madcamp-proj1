@@ -9,6 +9,7 @@ const TextOverlay = ({
   blocks,
   cameraDimensions,
   frameDimensions,
+  isTranslate,
 }: {
   blocks: any | undefined;
   cameraDimensions: Dimension;
@@ -16,6 +17,7 @@ const TextOverlay = ({
     width: number;
     height: number;
   }>;
+  isTranslate: boolean;
 }) => {
   return (
     <View
@@ -57,7 +59,11 @@ const TextOverlay = ({
                     ),
                   },
                 ]}>
-                {block.text}
+                {isTranslate &&
+                block.translatedText &&
+                !block.translatedText.includes('fail')
+                  ? block.translatedText
+                  : block.text}
               </Text>
             </View>
           );
