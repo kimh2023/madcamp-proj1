@@ -6,8 +6,9 @@
  */
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {LogBox} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 import MainTabs from '@src/navigation/MainTabs';
 
@@ -36,14 +37,15 @@ const MyTheme = {
 function App(): React.JSX.Element {
   LogBox.ignoreLogs(['new NativeEventEmitter']);
 
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 2000); // hide splash screen now
+  });
+
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {/* <Stack.Screen
-          name="ContactEditScreen"
-          component={ContactEditScreen}
-          initialParams={{userId: '1'}}
-        /> */}
         <Stack.Screen
           name="MainTabs"
           component={MainTabs}

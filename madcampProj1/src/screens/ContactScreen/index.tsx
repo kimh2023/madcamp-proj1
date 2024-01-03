@@ -49,13 +49,41 @@ function ContactScreen({route, navigation}: Props) {
         console.log('Permission for ContactScreen: ', res);
         Contacts.getAll().then(allContacts => {
           // console.log('Contacts: ', allContacts);
-          setContacts(allContacts);
+          const sortedContacts = allContacts.sort((a, b) => {
+            // Use toUpperCase() to ensure a case-insensitive comparison
+            const displayNameA = a.displayName.toUpperCase();
+            const displayNameB = b.displayName.toUpperCase();
+
+            if (displayNameA < displayNameB) {
+              return -1;
+            }
+            if (displayNameA > displayNameB) {
+              return 1;
+            }
+            return 0;
+          });
+
+          setContacts(sortedContacts);
         });
       });
     } else {
       Contacts.getAll().then(allContacts => {
         // console.log('Contacts: ', allContacts);
-        setContacts(allContacts);
+        const sortedContacts = allContacts.sort((a, b) => {
+          // Use toUpperCase() to ensure a case-insensitive comparison
+          const displayNameA = a.displayName.toUpperCase();
+          const displayNameB = b.displayName.toUpperCase();
+
+          if (displayNameA < displayNameB) {
+            return -1;
+          }
+          if (displayNameA > displayNameB) {
+            return 1;
+          }
+          return 0;
+        });
+
+        setContacts(sortedContacts);
       });
     }
   }, []);
@@ -106,13 +134,41 @@ function ContactScreen({route, navigation}: Props) {
         console.log('Permission for ContactScreen: ', res);
         Contacts.getContactsMatchingString(text).then(allContacts => {
           console.log('Contacts Searched: ', allContacts);
-          setContacts(allContacts);
+          const sortedContacts = allContacts.sort((a, b) => {
+            // Use toUpperCase() to ensure a case-insensitive comparison
+            const displayNameA = a.displayName.toUpperCase();
+            const displayNameB = b.displayName.toUpperCase();
+
+            if (displayNameA < displayNameB) {
+              return -1;
+            }
+            if (displayNameA > displayNameB) {
+              return 1;
+            }
+            return 0;
+          });
+
+          setContacts(sortedContacts);
         });
       });
     } else {
       Contacts.getContactsMatchingString(text).then(allContacts => {
         console.log('Contacts Searched: ', allContacts);
-        setContacts(allContacts);
+        const sortedContacts = allContacts.sort((a, b) => {
+          // Use toUpperCase() to ensure a case-insensitive comparison
+          const displayNameA = a.displayName.toUpperCase();
+          const displayNameB = b.displayName.toUpperCase();
+
+          if (displayNameA < displayNameB) {
+            return -1;
+          }
+          if (displayNameA > displayNameB) {
+            return 1;
+          }
+          return 0;
+        });
+
+        setContacts(sortedContacts);
       });
     }
   };

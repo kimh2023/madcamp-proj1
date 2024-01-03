@@ -2,7 +2,13 @@ import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ContactStackParamsList} from '@src/../App';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {AppState, PermissionsAndroid, Platform, Text} from 'react-native';
+import {
+  AppState,
+  BackHandler,
+  PermissionsAndroid,
+  Platform,
+  Text,
+} from 'react-native';
 import Contacts, {Contact} from 'react-native-contacts';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -85,6 +91,17 @@ function ContactDetailsScreen({route, navigation}: Props) {
       ),
     [],
   );
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.navigate('MainTabs');
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
 
   return (
     <LinearGradient
