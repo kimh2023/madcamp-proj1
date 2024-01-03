@@ -1,0 +1,192 @@
+// taken from https://github.com/ismaelsousa/vision-camera-ocr/tree/v2 and modified
+
+package com.madcampproj1.textdetection
+
+import android.graphics.Point
+import android.graphics.Rect
+import android.media.Image
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.mrousavy.camera.frameprocessor.Frame
+import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin
+import com.mrousavy.camera.types.Orientation
+
+class TextDetectionPlugin(options: Map<String, Any>?) : FrameProcessorPlugin(options) {
+  private fun getBlockArray(blocks: MutableList<Text.TextBlock>): List<HashMap<String, Any?>> {
+    val blockArray = mutableListOf<HashMap<String, Any?>>()
+    var translatorFlag = false
+
+    val options =
+        TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.KOREAN)
+            .build()
+    val englishKoreanTranslator = Translation.getClient(options)
+    var conditions = DownloadConditions.Builder().requireWifi().build()
+    try {
+      Tasks.await(englishKoreanTranslator.downloadModelIfNeeded(conditions))
+
+      for (block in blocks) {
+        val blockMap = HashMap<String, Any?>()
+        val task: Task<String> = englishKoreanTranslator.translate(block.text)
+        try {
+          val translatedText = Tasks.await(task)
+          blockMap["translatedText"] = translatedText
+        } catch (e: Exception) {
+          blockMap["translatedText"] = "fail at translation: $e"
+        }
+
+        blockMap["text"] = block.text
+        blockMap["recognizedLanguages"] = getRecognizedLanguages(block.recognizedLanguage)
+        blockMap["cornerPoints"] = block.cornerPoints?.let { getCornerPoints(it) }
+        blockMap["frame"] = block.boundingBox?.let { getFrame(it) }
+        blockMap["boundingBox"] = block.boundingBox?.let { getBoundingBox(it) }
+        blockMap["lines"] = getLineArray(block.lines)
+
+        blockArray.add(blockMap)
+      }
+      return blockArray
+    } catch (e: Exception) {
+      return blockArray
+    }
+
+    // val task: Task<Text> = recognizer.process(image)
+    // try {
+    //   val text: Text = Tasks.await(task)
+    //   result["text"] = text.text
+    //   result["blocks"] = getBlockArray(text.textBlocks)
+    // } catch (e: Exception) {
+    //   return null
+    // }
+
+  }
+
+  private fun getLineArray(lines: MutableList<Text.Line>): List<HashMap<String, Any?>> {
+    val lineArray = mutableListOf<HashMap<String, Any?>>()
+
+    for (line in lines) {
+      val lineMap = hashMapOf<String, Any?>()
+
+      lineMap["text"] = line.text
+      lineMap["recognizedLanguages"] = getRecognizedLanguages(line.recognizedLanguage)
+      lineMap["cornerPoints"] = line.cornerPoints?.let { getCornerPoints(it) }
+      lineMap["frame"] = line.boundingBox?.let { getFrame(it) }
+      lineMap["boundingBox"] = line.boundingBox?.let { getBoundingBox(it) }
+      lineMap["elements"] = getElementArray(line.elements)
+
+      lineArray.add(lineMap)
+    }
+    return lineArray
+  }
+
+  private fun getElementArray(elements: MutableList<Text.Element>): List<HashMap<String, Any?>> {
+    val elementArray = mutableListOf<HashMap<String, Any?>>()
+
+    for (element in elements) {
+      val elementMap = hashMapOf<String, Any?>()
+
+      elementMap["text"] = element.text
+      elementMap["cornerPoints"] = element.cornerPoints?.let { getCornerPoints(it) }
+      elementMap["frame"] = element.boundingBox?.let { getFrame(it) }
+      elementMap["boundingBox"] = element.boundingBox?.let { getBoundingBox(it) }
+      elementArray.add(elementMap)
+    }
+    return elementArray
+  }
+
+  private fun getRecognizedLanguages(recognizedLanguage: String): List<String> {
+    return listOf(recognizedLanguage)
+  }
+
+  private fun getCornerPoints(points: Array<Point>): List<HashMap<String, Int>> {
+    val cornerPoints = mutableListOf<HashMap<String, Int>>()
+
+    for (point in points) {
+      val pointMap = hashMapOf<String, Int>()
+      pointMap["x"] = point.x
+      pointMap["y"] = point.y
+      cornerPoints.add(pointMap)
+    }
+    return cornerPoints
+  }
+
+  private fun getFrame(boundingBox: Rect?): HashMap<String, Any> {
+    val frame = hashMapOf<String, Any>()
+
+    if (boundingBox != null) {
+      frame["x"] = boundingBox.exactCenterX().toDouble()
+      frame["y"] = boundingBox.exactCenterY().toDouble()
+      frame["width"] = boundingBox.width()
+      frame["height"] = boundingBox.height()
+      frame["boundingCenterX"] = boundingBox.centerX()
+      frame["boundingCenterY"] = boundingBox.centerY()
+    }
+    return frame
+  }
+
+  private fun getBoundingBox(boundingBox: Rect?): HashMap<String, Any> {
+    val box = hashMapOf<String, Any>()
+
+    if (boundingBox != null) {
+      box["left"] = boundingBox.left
+      box["top"] = boundingBox.top
+      box["right"] = boundingBox.right
+      box["bottom"] = boundingBox.bottom
+    }
+
+    return box
+  }
+
+  override fun callback(frame: Frame, arguments: Map<String, Any>?): Any? {
+    //     val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+    //     val mediaImage: Image? = frame.image
+    //     // val is const, var is let
+    //     var rotation: Int = 90
+    //     if (frame.orientation == "portrait")  {
+    //       rotation = 0
+    //     }
+
+    //     val result : MutableMap<String, String> = mutableMapOf()
+    //     if (mediaImage != null) {
+    //       val image = InputImage.fromMediaImage(mediaImage, rotation)
+    //       val result = recognizer.process(image)
+    //         .addOnSuccessListener { visionText ->
+    //           result.put("result",visionText.text)
+    //           result.put("blocks", "$visionText.textBlocks")
+    //         }
+    //         .addOnFailureListener { e ->
+    //           result.put("result","error: $e.message")
+    //         }
+    //     }
+    //     return result
+
+    val result = hashMapOf<String, Any>()
+
+    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+    val mediaImage: Image? = frame.image
+    val orientation = Orientation.fromUnionValue(frame.orientation)
+
+    if (mediaImage != null && orientation != null) {
+      val image = InputImage.fromMediaImage(mediaImage, orientation.toDegrees())
+      val task: Task<Text> = recognizer.process(image)
+      try {
+        val text: Text = Tasks.await(task)
+        result["text"] = text.text
+        result["blocks"] = getBlockArray(text.textBlocks)
+      } catch (e: Exception) {
+        return null
+      }
+    }
+
+    return hashMapOf("result" to result)
+  }
+}

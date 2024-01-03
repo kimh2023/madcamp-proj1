@@ -4,101 +4,89 @@
  *
  * @format
  */
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useEffect} from 'react';
+import {LogBox} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
-import React from 'react';
+import MainTabs from '@src/navigation/MainTabs';
+
+import ContactDetailsScreen from '@src/screens/ContactDetailsScreen';
+import ContactEditScreen from '@src/screens/ContactEditScreen';
+import AlbumDetailScreen from '@src/screens/GalleryScreen/AlbumDetail';
+import ArtistDetailScreen from '@src/screens/GalleryScreen/ArtistDetail';
+import ImageDetailScreen from '@src/screens/GalleryScreen/ImageDetail';
+import TrackDetailScreen from '@src/screens/GalleryScreen/TrackDetail';
+
 import {
-  // SafeAreaView,
-  // ScrollView,
-  // StatusBar,
-  StyleSheet,
-  // Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+  SearchResultItem,
+  SearchResultItem_Track,
+} from '@src/components/GalleryComponents/SearchBar';
 
-import {
-  Colors,
-  // DebugInstructions,
-  // Header,
-  // LearnMoreLinks,
-  // ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import ContactScreen from './src/screens/GalleryScreen';
-import GalleryScreen from './src/screens/ContactScreen';
-import MysteryScreen from './src/screens/MysteryScreen';
+import {globalVariables} from '@src/styles/globalVariables';
 
-import ContactIcon from './src/assets/icons/contact-icon.svg';
-import ContactIconFocus from './src/assets/icons/contact-icon-focus.svg';
-import GalleryIcon from './src/assets/icons/gallery-icon.svg';
-import GalleryIconFocus from './src/assets/icons/gallery-icon-focus.svg';
-import MysteryIcon from './src/assets/icons/mystery-icon.svg';
-import MysteryIconFocus from './src/assets/icons/mystery-icon-focus.svg';
+export type ContactStackParamsList = {
+  MainTabs: undefined;
+  ContactDetailsScreen: {userId: string};
+  ContactEditScreen: {userId: string};
+  AlbumDetailScreen: {albumInfo: SearchResultItem};
+  ArtistDetailScreen: {artistInfo: SearchResultItem};
+  TrackDetailScreen: {trackInfo: SearchResultItem_Track};
+  ImageDetailScreen: {imageUrl: string};
+};
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator<ContactStackParamsList>();
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: globalVariables.color.white,
+    text: globalVariables.color.dark,
+  },
+};
 
 function App(): React.JSX.Element {
-  // const isDarkMode = useColorScheme() === 'dark';
+  LogBox.ignoreLogs(['new NativeEventEmitter']);
 
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000); // hide splash screen now
+  });
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            switch (route.name) {
-              case '연락처':
-                if (focused) {
-                  return <ContactIconFocus width={40} height={40} />;
-                } else {
-                  return <ContactIcon width={40} height={40} />;
-                }
-              case '갤러리':
-                if (focused) {
-                  return <GalleryIconFocus width={40} height={40} />;
-                } else {
-                  return <GalleryIcon width={40} height={40} />;
-                }
-              default:
-                if (focused) {
-                  return <MysteryIconFocus width={40} height={40} />;
-                } else {
-                  return <MysteryIcon width={40} height={40} />;
-                }
-            }
-          },
-          tabBarActiveTintColor: 'tomato',
-          tabBarInactiveTintColor: 'gray',
-        })}>
-        <Tab.Screen name="연락처" component={ContactScreen} />
-        <Tab.Screen name="갤러리" component={GalleryScreen} />
-        <Tab.Screen name="???" component={MysteryScreen} />
-      </Tab.Navigator>
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{title: '연락처'}}
+        />
+        <Stack.Screen
+          name="ContactEditScreen"
+          component={ContactEditScreen}
+          initialParams={{userId: '1'}}
+        />
+        <Stack.Screen
+          name="ContactDetailsScreen"
+          component={ContactDetailsScreen}
+          initialParams={{userId: '1'}}
+        />
+        <Stack.Screen
+          name="ArtistDetailScreen"
+          component={ArtistDetailScreen}
+        />
+        <Stack.Screen name="AlbumDetailScreen" component={AlbumDetailScreen} />
+        <Stack.Screen name="TrackDetailScreen" component={TrackDetailScreen} />
+        <Stack.Screen
+          name="ImageDetailScreen"
+          component={ImageDetailScreen}
+          initialParams={{imageUrl: '1'}}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+export default React.memo(App);
