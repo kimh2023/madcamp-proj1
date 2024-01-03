@@ -10,7 +10,7 @@ import Share from 'react-native-share';
 import Tts from 'react-native-tts';
 import ViewShot from 'react-native-view-shot';
 
-import ShareIcon from '@src/assets/icons/toggle-icon-share.svg';
+// import ShareIcon from '@src/assets/icons/toggle-icon-share.svg';
 import TranslateIcon from '@src/assets/icons/toggle-icon-translate.svg';
 import TTSIcon from '@src/assets/icons/toggle-icon-tts.svg';
 
@@ -88,13 +88,14 @@ const OCRAppBar = ({
     <View
       style={{
         position: 'absolute',
+        bottom: globalVariables.margin.buttonMargin,
         right: globalVariables.margin.buttonMargin,
         zIndex: 10,
         display: 'flex',
         gap: globalVariables.gap.verticalGap,
-        height: '100%',
+        // height: '100%',
       }}>
-      <Pressable
+      {/* <Pressable
         onPress={handleShare}
         style={[
           returnCircleStyle(false),
@@ -110,7 +111,7 @@ const OCRAppBar = ({
             false ? globalVariables.color.dark : globalVariables.color.white
           }
         />
-      </Pressable>
+      </Pressable> */}
       <Pressable onPress={handleTTS} style={returnCircleStyle(isSpeaking)}>
         <TTSIcon
           width={55}
