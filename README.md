@@ -81,6 +81,7 @@ Why we choose to use? :
 
 
 ## Demonstration
+![1_1 Splash View](https://github.com/kimh2023/madcamp-proj1/assets/80628737/30b8636b-eecf-41a3-8f98-b6898c079def)
 
 
 
